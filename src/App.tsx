@@ -5,9 +5,10 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import { useState } from "react"
 import { createTheme, ThemeProvider, useColorScheme } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
+import Habits from "./Components/Habits";
 
 function MyApp() {
-    // theme selected by the user from the switch component
+    // theme selected by the user from the switch component, true = dark, false = light
     const [theme, setTheme] = useState<boolean>(false);
 
     // the color mode for material ui, based on selected theme
@@ -37,6 +38,7 @@ function MyApp() {
                 control={<Switch value={theme} onChange={handleNewTheme} color="default"></Switch>} label='🌗'/>
         </FormControl>
 
+        <Habits theme={theme}/>
     </Box>
 }
 
