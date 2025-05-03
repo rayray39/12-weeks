@@ -28,12 +28,15 @@ function MyApp() {
 
     return <Box sx={{
         display:'flex',
-        justifyContent:'center'
+        flexDirection: 'column',
+        justifyContent:'center',
+        alignItems:'center'
     }}>
         <FormControl>
             <FormControlLabel 
                 control={<Switch value={theme} onChange={handleNewTheme} color="default"></Switch>} label='🌗'/>
         </FormControl>
+
     </Box>
 }
 
@@ -41,6 +44,9 @@ const theme = createTheme({
     colorSchemes: {
       dark: true,
     },
+    typography:{
+        fontFamily: `'Roboto', 'Arial', sans-serif`,
+    }
 });
 
 function App() {
