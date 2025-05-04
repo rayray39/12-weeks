@@ -2,18 +2,30 @@ import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import Stack from "@mui/material/Stack"
 
-function Habits({ theme }:{ theme:boolean }) {
+function Habits({ theme, addNewHabit }:{ theme:boolean, addNewHabit:() => void }) {
+
+    const handleNewHabit = () => {
+        addNewHabit();
+        console.log('handle new habit');
+    }
 
     return <Box sx={{
-        border: theme ? '1px solid white' : '1px solid black',
-        borderRadius: '8px',
-        width:'500px',
-        height:'500px'
+        display:'flex',
+        flexDirection:'column',
+        alignItems:'center'
     }}>
-        <Stack spacing={1}>
-            <Button disableElevation variant="contained">Habit 1</Button>
-            <Button disableElevation variant="contained">Habit 2</Button>
-            <Button disableElevation variant="contained">Habit 3</Button>
+        <Button
+            disableElevation
+            variant="contained"
+            onClick={handleNewHabit}>Add New Habit</Button>
+
+        <Stack spacing={1} sx={{
+            border: theme ? '1px solid white' : '1px solid black',
+            borderRadius: '8px',
+            width:'500px',
+            height:'500px'
+        }}>
+
         </Stack>
     </Box>
 }
