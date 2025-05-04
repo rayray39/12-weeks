@@ -1,7 +1,8 @@
 import Box from "@mui/material/Box"
 import Stack from "@mui/material/Stack"
+import { Habit } from "../Types/types"
 
-function Habits({ theme }:{ theme:boolean }) {
+function Habits({ theme, habits }:{ theme:boolean, habits:Habit[] }) {
 
     return <Box sx={{
         display:'flex',

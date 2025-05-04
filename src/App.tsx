@@ -7,6 +7,7 @@ import { createTheme, ThemeProvider, useColorScheme } from "@mui/material/styles
 import { CssBaseline } from "@mui/material";
 import Habits from "./Components/Habits";
 import NewHabitDialog from "./Components/NewHabitDialog";
+import { Habit } from "./Types/types";
 
 function MyApp() {
     // theme selected by the user from the switch component, true = dark, false = light
@@ -17,10 +18,6 @@ function MyApp() {
 
     const [newHabitTitle, setNewHabitTitle] = useState<string>('');
     const [newHabitDesc, setNewHabitDesc] = useState<string>('');
-    type Habit = {
-        title: string,
-        desc: string,
-    };
     const [habits, setHabits] = useState<Habit[]>([]);
 
     // the color mode for material ui, based on selected theme
@@ -83,7 +80,7 @@ function MyApp() {
 
         <NewHabitDialog open={openNewHabitDialog} handleOpen={addNewHabit} handleClose={handleCloseNewHabitDialog} />
 
-        <Habits theme={theme} />
+        <Habits theme={theme} habits={habits} />
     </Box>
 }
 
