@@ -17,6 +17,11 @@ function MyApp() {
 
     const [newHabitTitle, setNewHabitTitle] = useState<string>('');
     const [newHabitDesc, setNewHabitDesc] = useState<string>('');
+    type Habit = {
+        title: string,
+        desc: string,
+    };
+    const [habits, setHabits] = useState<Habit[]>([]);
 
     // the color mode for material ui, based on selected theme
     const { mode, setMode } = useColorScheme();
@@ -35,17 +40,25 @@ function MyApp() {
         }
     }
 
-    const handleCloseNewHabitDialog = (title:string, desc:string) => {
+    const handleCloseNewHabitDialog = (newTitle:string, newDesc:string) => {
         // close the dialog for adding new habit
         console.log('closing new habit dialog')
         setOpenNewHabitDialog(false);
 
-        if (title && desc) {
+        if (newTitle && newDesc) {
             // take the new habit's title and description from the dialog
-            setNewHabitTitle(title);
-            setNewHabitDesc(desc);
-            console.log(`new habit title = ${title}`);
-            console.log(`new habit desc = ${desc}`);
+            setNewHabitTitle(newTitle);
+            setNewHabitDesc(newDesc);
+            console.log(`new habit title = ${newTitle}`);
+            console.log(`new habit desc = ${newDesc}`);
+
+            // create new habit object and add to list
+            const newHabit:Habit = {
+                title: newTitle,
+                desc: newDesc
+            }
+            setHabits((prev) => [...prev, newHabit]);
+            console.log('new habit successfully added to list');
         } else {
             console.log('title or desc is empty');
         }
