@@ -6,10 +6,14 @@ import { useState } from "react"
 import { createTheme, ThemeProvider, useColorScheme } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import Habits from "./Components/Habits";
+import NewHabitDialog from "./Components/NewHabitDialog";
 
 function MyApp() {
     // theme selected by the user from the switch component, true = dark, false = light
     const [theme, setTheme] = useState<boolean>(false);
+
+    // control the dialog's state to add a new habit
+    const [openNewHabitDialog, setOpenNewHabitDialog] = useState<boolean>(false);
 
     // the color mode for material ui, based on selected theme
     const { mode, setMode } = useColorScheme();
@@ -28,8 +32,16 @@ function MyApp() {
         }
     }
 
+    const handleCloseNewHabitDialog = () => {
+        // close the dialog for adding new habit
+        console.log('closing new habit dialog')
+        setOpenNewHabitDialog(false);
+    }
+
     const addNewHabit = () => {
+        // open the dialog to create a new habit
         console.log('adding new habit');
+        setOpenNewHabitDialog(true);
     }
 
     return <Box sx={{
@@ -42,6 +54,8 @@ function MyApp() {
             <FormControlLabel 
                 control={<Switch value={theme} onChange={handleNewTheme} color="default"></Switch>} label='🌗'/>
         </FormControl>
+
+        <NewHabitDialog open={openNewHabitDialog} handleClose={handleCloseNewHabitDialog} />
 
         <Habits theme={theme} addNewHabit={addNewHabit}/>
     </Box>
