@@ -1,5 +1,6 @@
 import Box from "@mui/material/Box"
 import Switch from "@mui/material/Switch"
+import Button from "@mui/material/Button"
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { useState } from "react"
@@ -18,6 +19,7 @@ function MyApp() {
     }
 
     const handleNewTheme = (event: React.ChangeEvent<HTMLInputElement>) => {
+        // changes the mode of the app
         setTheme(event.target.checked);
 
         if (event.target.checked) {
@@ -25,6 +27,10 @@ function MyApp() {
         } else {
             setMode('light');
         }
+    }
+
+    const addNewHabit = () => {
+        console.log('adding new habit');
     }
 
     return <Box sx={{
@@ -38,7 +44,7 @@ function MyApp() {
                 control={<Switch value={theme} onChange={handleNewTheme} color="default"></Switch>} label='🌗'/>
         </FormControl>
 
-        <Habits theme={theme}/>
+        <Habits theme={theme} addNewHabit={addNewHabit}/>
     </Box>
 }
 
