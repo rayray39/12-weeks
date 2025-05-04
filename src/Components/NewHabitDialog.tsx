@@ -1,3 +1,4 @@
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -18,9 +19,18 @@ const Transition = forwardRef(function Transition(
     return <Slide direction="down" ref={ref} {...props} />;
 });
 
-function NewHabitDialog({ open, handleClose }:{ open:boolean, handleClose:(title:string, desc:string) => void }) {
+function NewHabitDialog({ open, handleOpen, handleClose }:{ open:boolean, handleOpen:() => void, handleClose:(title:string, desc:string) => void }) {
 
-    return <>
+    return <Box sx={{
+        display:'flex',
+        flexDirection:'column',
+        alignItems:'center'
+    }}>
+        <Button
+            disableElevation
+            variant="contained"
+            onClick={handleOpen}>Add New Habit</Button>
+
         <Dialog
         open={open}
         onClose={() => handleClose('', '')}
@@ -75,7 +85,7 @@ function NewHabitDialog({ open, handleClose }:{ open:boolean, handleClose:(title
           <Button type="submit">Submit</Button>
         </DialogActions>
       </Dialog>
-    </>
+    </Box>
 }
 
 export default NewHabitDialog
