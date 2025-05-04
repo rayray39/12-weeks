@@ -4,7 +4,19 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Slide from "@mui/material/Slide";
 import TextField from "@mui/material/TextField";
+import { TransitionProps } from "@mui/material/transitions";
+import { forwardRef } from "react";
+
+const Transition = forwardRef(function Transition(
+    props: TransitionProps & {
+        children: React.ReactElement<any, any>;
+    },
+    ref: React.Ref<unknown>,
+    ) {
+    return <Slide direction="down" ref={ref} {...props} />;
+});
 
 function NewHabitDialog({ open, handleClose }:{ open:boolean, handleClose:() => void }) {
 
@@ -12,41 +24,55 @@ function NewHabitDialog({ open, handleClose }:{ open:boolean, handleClose:() => 
         <Dialog
         open={open}
         onClose={handleClose}
+        slots={{transition: Transition}}
         slotProps={{
           paper: {
             component: 'form',
             onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-              event.preventDefault();
-              const formData = new FormData(event.currentTarget);
-              const formJson = Object.fromEntries((formData as any).entries());
-              const email = formJson.email;
-              console.log(email);
-              handleClose();
+                event.preventDefault();
+                const formData = new FormData(event.currentTarget);
+                const formJson = Object.fromEntries((formData as any).entries());
+                const title = formJson.title;
+                const desc = formJson.description;
+                console.log(`title = ${title}`);
+                console.log(`desc = ${desc}`);
+                handleClose();
             },
           },
         }}
       >
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>Add a new habit</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To subscribe to this website, please enter your email address here. We
-            will send updates occasionally.
+            Enter the title for your new habit
           </DialogContentText>
           <TextField
             autoFocus
             required
-            margin="dense"
-            id="name"
-            name="email"
-            label="Email Address"
-            type="email"
+            id="new-habit-title"
+            name="title"
+            label="Title"
             fullWidth
-            variant="standard"
+            variant="outlined"
+          />
+        </DialogContent>
+
+        <DialogContent>
+          <DialogContentText>
+            Enter a description for your new habit
+          </DialogContentText>
+          <TextField
+            required
+            id="new-habit-description"
+            name="description"
+            label="Description"
+            fullWidth
+            variant="outlined"
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
-          <Button type="submit">Subscribe</Button>
+          <Button type="submit">Submit</Button>
         </DialogActions>
       </Dialog>
     </>
