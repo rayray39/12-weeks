@@ -68,9 +68,9 @@ function MyApp() {
                 control={<Switch value={theme} onChange={handleNewTheme} color="default"></Switch>} label='🌗'/>
         </FormControl>
 
-        <NewHabitDialog open={openNewHabitDialog} handleClose={handleCloseNewHabitDialog} />
+        <NewHabitDialog open={openNewHabitDialog} handleOpen={addNewHabit} handleClose={handleCloseNewHabitDialog} />
 
-        <Habits theme={theme} addNewHabit={addNewHabit}/>
+        <Habits theme={theme} />
     </Box>
 }
 
