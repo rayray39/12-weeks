@@ -18,12 +18,12 @@ const Transition = forwardRef(function Transition(
     return <Slide direction="down" ref={ref} {...props} />;
 });
 
-function NewHabitDialog({ open, handleClose }:{ open:boolean, handleClose:() => void }) {
+function NewHabitDialog({ open, handleClose }:{ open:boolean, handleClose:(title:string, desc:string) => void }) {
 
     return <>
         <Dialog
         open={open}
-        onClose={handleClose}
+        onClose={() => handleClose('', '')}
         slots={{transition: Transition}}
         slotProps={{
           paper: {
@@ -34,9 +34,9 @@ function NewHabitDialog({ open, handleClose }:{ open:boolean, handleClose:() => 
                 const formJson = Object.fromEntries((formData as any).entries());
                 const title = formJson.title;
                 const desc = formJson.description;
-                console.log(`title = ${title}`);
-                console.log(`desc = ${desc}`);
-                handleClose();
+                // console.log(`title = ${title}`);
+                // console.log(`desc = ${desc}`);
+                handleClose(title, desc);
             },
           },
         }}
@@ -71,7 +71,7 @@ function NewHabitDialog({ open, handleClose }:{ open:boolean, handleClose:() => 
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={() => handleClose('', '')}>Cancel</Button>
           <Button type="submit">Submit</Button>
         </DialogActions>
       </Dialog>
