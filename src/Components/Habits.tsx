@@ -15,7 +15,14 @@ function Habits({ theme, habits }:{ theme:boolean, habits:Habit[] }) {
             width:'500px',
             height:'500px'
         }}>
-
+           {
+                habits.map((habit, index) => (
+                    <Stack key={index}>
+                        <Box>{habit.title}</Box>
+                        <Box>{habit.desc}</Box>
+                    </Stack>
+                ))
+           } 
         </Stack>
     </Box>
 }
