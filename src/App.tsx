@@ -15,6 +15,9 @@ function MyApp() {
     // control the dialog's state to add a new habit
     const [openNewHabitDialog, setOpenNewHabitDialog] = useState<boolean>(false);
 
+    const [newHabitTitle, setNewHabitTitle] = useState<string>('');
+    const [newHabitDesc, setNewHabitDesc] = useState<string>('');
+
     // the color mode for material ui, based on selected theme
     const { mode, setMode } = useColorScheme();
     if (!mode) {
@@ -32,10 +35,20 @@ function MyApp() {
         }
     }
 
-    const handleCloseNewHabitDialog = () => {
+    const handleCloseNewHabitDialog = (title:string, desc:string) => {
         // close the dialog for adding new habit
         console.log('closing new habit dialog')
         setOpenNewHabitDialog(false);
+
+        if (title && desc) {
+            // take the new habit's title and description from the dialog
+            setNewHabitTitle(title);
+            setNewHabitDesc(desc);
+            console.log(`new habit title = ${title}`);
+            console.log(`new habit desc = ${desc}`);
+        } else {
+            console.log('title or desc is empty');
+        }
     }
 
     const addNewHabit = () => {
