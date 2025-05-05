@@ -19,6 +19,7 @@ const Transition = forwardRef(function Transition(
     return <Slide direction="down" ref={ref} {...props} />;
 });
 
+// opens up the dialog to add a new habit (title, description)
 function NewHabitDialog({ open, handleOpen, handleClose }:{ open:boolean, handleOpen:() => void, handleClose:(title:string, desc:string) => void }) {
 
     return <Box sx={{
