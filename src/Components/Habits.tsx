@@ -3,9 +3,7 @@ import Stack from "@mui/material/Stack"
 import { Habit } from "../Types/types"
 import Button from "@mui/material/Button"
 import { useEffect, useState } from "react"
-import Card from "@mui/material/Card"
-import CardContent from "@mui/material/CardContent"
-import Typography from "@mui/material/Typography"
+import HabitCard from "./HabitCard.tsx"
 
 // main display area for all the habits
 function Habits({ theme, habits }:{ theme:boolean, habits:Habit[] }) {
@@ -70,19 +68,6 @@ function Habits({ theme, habits }:{ theme:boolean, habits:Habit[] }) {
             </Stack>
         </Box>
     </Box>
-}
-
-function HabitCard({ title, desc }:{ title:string, desc:string }) {
-    return <Card>
-        <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-                {title}
-            </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {desc}
-            </Typography>
-      </CardContent>
-    </Card>
 }
 
 export default Habits
