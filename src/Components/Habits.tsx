@@ -2,12 +2,15 @@ import Box from "@mui/material/Box"
 import Stack from "@mui/material/Stack"
 import { Habit } from "../Types/types"
 import Button from "@mui/material/Button"
+import { useState } from "react"
 
 // main display area for all the habits
 function Habits({ theme, habits }:{ theme:boolean, habits:Habit[] }) {
+    const [displayedHabit, setDisplayedHabit] = useState<Habit>();
 
     const handleSelectHabit = (index:number) => {
         console.log(`habit ${index} is being displayed`);
+        setDisplayedHabit(habits[index]);
     }
 
     return <Box sx={{
@@ -27,7 +30,7 @@ function Habits({ theme, habits }:{ theme:boolean, habits:Habit[] }) {
                 // border:'1px solid black',
                 padding:'20px',
                 width:'600px'
-            }}>main area</Box>
+            }}>{displayedHabit ? displayedHabit.title : 'main area'}</Box>
            
             <Stack spacing={1} sx={{
                 // border:'1px solid black',
