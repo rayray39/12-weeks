@@ -58,7 +58,7 @@ function Habits({ theme, habits }:{ theme:boolean, habits:Habit[] }) {
                             onClick={() => handleSelectHabit(index)} 
                             disableElevation 
                             variant="contained">
-                                {habit.title}
+                                {habit.title.length > 10 ? `${habit.title.slice(0, 10)}...` : habit.title}
                         </Button>
                     ))
                 }
