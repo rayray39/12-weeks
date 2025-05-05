@@ -12,8 +12,11 @@ function Habits({ theme, habits }:{ theme:boolean, habits:Habit[] }) {
     const [displayedHabit, setDisplayedHabit] = useState<Habit>();
 
     useEffect(() => {
-        setDisplayedHabit(habits[0]);
-    }, [])
+        // the first habit is displayed as soon as it is added into the habits array
+        if (habits.length > 0 && !displayedHabit) {
+            setDisplayedHabit(habits[0]);
+        }
+    }, [habits])
 
     const handleSelectHabit = (index:number) => {
         console.log(`habit ${index} is being displayed`);
