@@ -50,11 +50,16 @@ function Habits({ theme, habits }:{ theme:boolean, habits:Habit[] }) {
             <Stack spacing={1} sx={{
                 // border:'1px solid black',
                 padding:'20px',
-                marginLeft:'20px'
+                marginLeft:'20px',
+                maxHeight: '400px', // Adjust to fit your layout
+                overflowY: 'auto',
             }}>
                 {
                     habits.map((habit, index) => (
                         <Button key={index}
+                            sx={{
+                                maxHeight:'40px'
+                            }}
                             onClick={() => handleSelectHabit(index)} 
                             disableElevation 
                             variant="contained">
