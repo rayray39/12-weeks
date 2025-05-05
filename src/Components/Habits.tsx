@@ -1,30 +1,51 @@
 import Box from "@mui/material/Box"
 import Stack from "@mui/material/Stack"
 import { Habit } from "../Types/types"
+import Button from "@mui/material/Button"
 
 // main display area for all the habits
 function Habits({ theme, habits }:{ theme:boolean, habits:Habit[] }) {
+
+    const handleSelectHabit = (index:number) => {
+        console.log(`habit ${index} is being displayed`);
+    }
 
     return <Box sx={{
         display:'flex',
         flexDirection:'column',
         alignItems:'center'
     }}>
-        <Stack spacing={1} sx={{
+        <Box sx={{
             border: theme ? '1px solid white' : '1px solid black',
             borderRadius: '8px',
-            width:'500px',
-            height:'500px'
+            width:'800px',
+            height:'400px',
+            display:'flex',
+            justifyContent:'center'
         }}>
-           {
-                habits.map((habit, index) => (
-                    <Stack key={index}>
-                        <Box>{habit.title}</Box>
-                        <Box>{habit.desc}</Box>
-                    </Stack>
-                ))
-           } 
-        </Stack>
+            <Box sx={{
+                // border:'1px solid black',
+                padding:'20px',
+                width:'600px'
+            }}>main area</Box>
+           
+            <Stack spacing={1} sx={{
+                // border:'1px solid black',
+                padding:'20px',
+                marginLeft:'20px'
+            }}>
+                {
+                    habits.map((habit, index) => (
+                        <Button key={index}
+                            onClick={() => handleSelectHabit(index)} 
+                            disableElevation 
+                            variant="contained">
+                                {habit.title}
+                        </Button>
+                    ))
+                }
+            </Stack>
+        </Box>
     </Box>
 }
 
