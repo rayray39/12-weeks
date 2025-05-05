@@ -2,6 +2,7 @@ import Box from "@mui/material/Box"
 import Stack from "@mui/material/Stack"
 import { Habit } from "../Types/types"
 
+// main display area for all the habits
 function Habits({ theme, habits }:{ theme:boolean, habits:Habit[] }) {
 
     return <Box sx={{
