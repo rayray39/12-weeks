@@ -37,11 +37,14 @@ const Transition = forwardRef(function Transition(
 });
 
 function HabitCard({ title, desc, startDate, endDate, darkTheme }:{ title:string, desc:string, startDate:string, endDate:string, darkTheme:boolean }) {
+    // github style contribution graph, each element has a default value of 0
     const [habitContribution, setHabitContribution] = useState<number[]>(new Array(NUM_OF_WEEKS * DAYS_PER_WEEK).fill(0))
 
+    // opens the diaplog to confirm commit to habit for today
     const [openCommitDialog, setOpenCommitDialog] = useState<boolean>(false);
 
     const handleCommit = () => {
+        // opens the dialog to confirm user's commit to the habit for today
         console.log('commiting today...');
         setOpenCommitDialog(true);
     }
@@ -55,6 +58,7 @@ function HabitCard({ title, desc, startDate, endDate, darkTheme }:{ title:string
     }
 
     const handleCancelCommitDialog = () => {
+        // closes the dialog if the user cancels the commit to the habit today
         setOpenCommitDialog(false);
         console.log('cancelling commit to habit...');
     }
