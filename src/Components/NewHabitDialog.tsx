@@ -19,8 +19,22 @@ const Transition = forwardRef(function Transition(
     return <Slide direction="down" ref={ref} {...props} />;
 });
 
+function formatDate(date: Date): string {
+    // returns the date object in the format, dd-MM-yyyy
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+}
+
 // opens up the dialog to add a new habit (title, description)
 function NewHabitDialog({ open, handleOpen, handleClose }:{ open:boolean, handleOpen:() => void, handleClose:(title:string, desc:string) => void }) {
+    const todayDate = new Date();
+    const startDateFormatted = formatDate(todayDate);
+
+    const endDate = new Date();
+    endDate.setDate(todayDate.getDate() + 7 * 12);
+    const endDateFormatted = formatDate(endDate);
 
     return <Box sx={{
         display:'flex',
@@ -80,6 +94,38 @@ function NewHabitDialog({ open, handleOpen, handleClose }:{ open:boolean, handle
             fullWidth
             variant="outlined"
           />
+        </DialogContent>
+
+        <DialogContent>
+            <TextField
+                id="new-habit-start-date"
+                name="start-date"
+                label='Starting Date'
+                defaultValue={startDateFormatted}
+                fullWidth
+                variant="outlined"
+                slotProps={{
+                    input: {
+                      readOnly: true,
+                    },
+                }}
+            />
+        </DialogContent>
+
+        <DialogContent>
+            <TextField
+                id="new-habit-end-date"
+                name="end-date"
+                label='Ending Date'
+                defaultValue={endDateFormatted}
+                fullWidth
+                variant="outlined"
+                slotProps={{
+                    input: {
+                      readOnly: true,
+                    },
+                }}
+            />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => handleClose('', '')}>Cancel</Button>
