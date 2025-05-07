@@ -3,15 +3,10 @@ import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+import { useState } from "react";
 
 const NUM_OF_WEEKS = 12;
 const DAYS_PER_WEEK = 7;
-
-const generateDummyData = () => {
-    return Array.from({ length: NUM_OF_WEEKS * DAYS_PER_WEEK }, () =>
-        Math.floor(Math.random() * 5)
-    );
-};
   
 const getColor = (level: number, dark: boolean) => {
     if (level < 0) {
@@ -26,7 +21,7 @@ const getColor = (level: number, dark: boolean) => {
 };
 
 function HabitCard({ title, desc, darkTheme }:{ title:string, desc:string, darkTheme:boolean }) {
-    const activity = generateDummyData();
+    const [habitContribution, setHabitContribution] = useState<number[]>(new Array(NUM_OF_WEEKS * DAYS_PER_WEEK).fill(0))
 
     const handleCommit = () => {
         console.log('commiting today...');
@@ -53,7 +48,7 @@ function HabitCard({ title, desc, darkTheme }:{ title:string, desc:string, darkT
                 }}
             >
                 {
-                    Array.from({ length: NUM_OF_WEEKS * DAYS_PER_WEEK }).map((_, index) => (
+                    habitContribution.map((_, index) => (
                         <Box key={index} sx={{
                             width:'100%',
                             aspectRatio: '1/1',
