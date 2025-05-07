@@ -15,16 +15,15 @@ import { forwardRef, useState } from "react";
 const NUM_OF_WEEKS = 12;
 const DAYS_PER_WEEK = 7;
   
-const getColor = (level: number, dark: boolean) => {
+const getColor = (level: number) => {
     if (level < 0) {
         level = 0;
     }
     if (level > 4) {
         level = 4;
     }
-    const lightShades = ['#ebf4ff', '#bee3f8', '#90cdf4', '#63b3ed', '#4299e1'];
-    const darkShades = ['#1A202C', '#2C5282', '#2B6CB0', '#3182CE', '#63B3ED'];
-    return dark ? darkShades[level] : lightShades[level];
+    const colors = ['#2F2F2F', '#a6d4fa', '#7cc0f5', '#52acef', '#2898ea'];
+    return colors[level];
 };
 
 const Transition = forwardRef(function Transition(
@@ -55,6 +54,15 @@ function HabitCard({ title, desc, startDate, endDate, darkTheme }:{ title:string
 
         const index = getTodayIndex();
         console.log(`the index is ${index}`);
+
+        if (index !== null) {
+            // updates the intensity level of the habitContribution to display appropriate color
+            setHabitContribution(prev => {
+                const updated = [...prev];
+                updated[index] = Math.min(prev[index] + 1, 4); // max out at intensity level 4
+                return updated;
+            });
+        }
     }
 
     const handleCancelCommitDialog = () => {
@@ -108,12 +116,12 @@ function HabitCard({ title, desc, startDate, endDate, darkTheme }:{ title:string
                 }}
             >
                 {
-                    habitContribution.map((_, index) => (
+                    habitContribution.map((intensityLevel, index) => (
                         <Box key={index} sx={{
                             width:'100%',
                             aspectRatio: '1/1',
-                            bgcolor: '#2F2F2F',
-                            borderRadius: '4px'
+                            bgcolor: getColor(intensityLevel),
+                            borderRadius: '4px',
                         }}></Box>
                     ))
                 }
