@@ -28,7 +28,7 @@ function formatDate(date: Date): string {
 }
 
 // opens up the dialog to add a new habit (title, description)
-function NewHabitDialog({ open, handleOpen, handleClose }:{ open:boolean, handleOpen:() => void, handleClose:(title:string, desc:string) => void }) {
+function NewHabitDialog({ open, handleOpen, handleClose }:{ open:boolean, handleOpen:() => void, handleClose:(title:string, desc:string, startDate:string, endDate:string) => void }) {
     const todayDate = new Date();
     const startDateFormatted = formatDate(todayDate);
 
@@ -48,7 +48,7 @@ function NewHabitDialog({ open, handleOpen, handleClose }:{ open:boolean, handle
 
         <Dialog
         open={open}
-        onClose={() => handleClose('', '')}
+        onClose={() => handleClose('', '', '', '')}
         slots={{transition: Transition}}
         slotProps={{
           paper: {
@@ -61,7 +61,7 @@ function NewHabitDialog({ open, handleOpen, handleClose }:{ open:boolean, handle
                 const desc = formJson.description;
                 // console.log(`title = ${title}`);
                 // console.log(`desc = ${desc}`);
-                handleClose(title, desc);
+                handleClose(title, desc, startDateFormatted, endDateFormatted);
             },
           },
         }}
@@ -128,7 +128,7 @@ function NewHabitDialog({ open, handleOpen, handleClose }:{ open:boolean, handle
             />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => handleClose('', '')}>Cancel</Button>
+          <Button onClick={() => handleClose('', '', '', '')}>Cancel</Button>
           <Button type="submit">Submit</Button>
         </DialogActions>
       </Dialog>
