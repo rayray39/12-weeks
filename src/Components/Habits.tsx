@@ -30,7 +30,7 @@ function Habits({ darkTheme, habits }:{ darkTheme:boolean, habits:Habit[] }) {
             border: darkTheme ? '1px solid white' : '1px solid black',
             borderRadius: '8px',
             width:'800px',
-            height:'400px',
+            height:'480px',
             display:'flex',
             justifyContent:'center'
         }}>
