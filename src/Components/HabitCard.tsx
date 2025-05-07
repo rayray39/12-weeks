@@ -47,17 +47,16 @@ function HabitCard({ title, desc, darkTheme }:{ title:string, desc:string, darkT
                     width: '100%',
                 }}
             >
-                {activity.map((level, i) => (
-                    <Box
-                        key={i}
-                        sx={{
-                            width: '100%',
-                            aspectRatio: '1 / 1',
-                            bgcolor: getColor(level, darkTheme),
-                            borderRadius: '4px',
-                        }}
-                    />
-                ))}
+                {
+                    Array.from({ length: NUM_OF_WEEKS * DAYS_PER_WEEK }).map((_, index) => (
+                        <Box key={index} sx={{
+                            width:'100%',
+                            aspectRatio: '1/1',
+                            bgcolor: '#2F2F2F',
+                            borderRadius: '4px'
+                        }}></Box>
+                    ))
+                }
             </Box>
       </CardContent>
     </Card>
