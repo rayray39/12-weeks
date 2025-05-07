@@ -36,7 +36,7 @@ const Transition = forwardRef(function Transition(
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function HabitCard({ title, desc, darkTheme }:{ title:string, desc:string, darkTheme:boolean }) {
+function HabitCard({ title, desc, startDate, endDate, darkTheme }:{ title:string, desc:string, startDate:string, endDate:string, darkTheme:boolean }) {
     const [habitContribution, setHabitContribution] = useState<number[]>(new Array(NUM_OF_WEEKS * DAYS_PER_WEEK).fill(0))
 
     const [openCommitDialog, setOpenCommitDialog] = useState<boolean>(false);
@@ -56,6 +56,9 @@ function HabitCard({ title, desc, darkTheme }:{ title:string, desc:string, darkT
         <CardContent>
             <Typography gutterBottom variant="h5" component="div">
                 {title}
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                {`${startDate} - ${endDate}`}
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                 {desc}

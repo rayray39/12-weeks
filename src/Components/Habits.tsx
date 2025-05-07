@@ -40,7 +40,13 @@ function Habits({ darkTheme, habits }:{ darkTheme:boolean, habits:Habit[] }) {
                 width:'600px'
             }}>{
                 displayedHabit ?
-                    <HabitCard title={displayedHabit.title} desc={displayedHabit.desc} darkTheme={darkTheme} /> :
+                    <HabitCard 
+                        title={displayedHabit.title} 
+                        desc={displayedHabit.desc}
+                        startDate={displayedHabit.startDate}
+                        endDate={displayedHabit.endDate}
+                        darkTheme={darkTheme} 
+                    /> :
                     'no habits'
                 }
             </Box>
