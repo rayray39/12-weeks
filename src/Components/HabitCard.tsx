@@ -1,4 +1,5 @@
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -26,6 +27,10 @@ const getColor = (level: number, dark: boolean) => {
 
 function HabitCard({ title, desc, darkTheme }:{ title:string, desc:string, darkTheme:boolean }) {
     const activity = generateDummyData();
+
+    const handleCommit = () => {
+        console.log('commiting today...');
+    }
 
     return <Card sx={{
         bgcolor: darkTheme ? '#4D4D4D' : '#E6E6E6'
@@ -58,6 +63,8 @@ function HabitCard({ title, desc, darkTheme }:{ title:string, desc:string, darkT
                     ))
                 }
             </Box>
+
+            <Button variant="contained" disableElevation onClick={handleCommit}>Commit Today</Button>
       </CardContent>
     </Card>
 }
