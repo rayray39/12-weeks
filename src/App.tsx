@@ -11,7 +11,7 @@ import { Habit } from "./Types/types";
 
 function MyApp() {
     // theme selected by the user from the switch component, true = dark, false = light
-    const [theme, setTheme] = useState<boolean>(false);
+    const [darkTheme, setDarkTheme] = useState<boolean>(false);
 
     // control the dialog's state to add a new habit
     const [openNewHabitDialog, setOpenNewHabitDialog] = useState<boolean>(false);
@@ -28,7 +28,7 @@ function MyApp() {
 
     const handleNewTheme = (event: React.ChangeEvent<HTMLInputElement>) => {
         // changes the mode of the app
-        setTheme(event.target.checked);
+        setDarkTheme(event.target.checked);
 
         if (event.target.checked) {
             setMode('dark');
@@ -75,12 +75,12 @@ function MyApp() {
     }}>
         <FormControl>
             <FormControlLabel 
-                control={<Switch value={theme} onChange={handleNewTheme} color="default"></Switch>} label='🌗'/>
+                control={<Switch value={darkTheme} onChange={handleNewTheme} color="default"></Switch>} label='🌗'/>
         </FormControl>
 
         <NewHabitDialog open={openNewHabitDialog} handleOpen={addNewHabit} handleClose={handleCloseNewHabitDialog} />
 
-        <Habits theme={theme} habits={habits} />
+        <Habits darkTheme={darkTheme} habits={habits} />
     </Box>
 }
 
