@@ -13,8 +13,14 @@ const generateDummyData = () => {
 };
   
 const getColor = (level: number, dark: boolean) => {
-    const lightShades = ['#ebedf0', '#c6e48b', '#7bc96f', '#239a3b', '#196127'];
-    const darkShades = ['#2d2d2d', '#406e2f', '#2e924c', '#2aa356', '#33ff88'];
+    if (level < 0) {
+        level = 0;
+    }
+    if (level > 4) {
+        level = 4;
+    }
+    const lightShades = ['#ebf4ff', '#bee3f8', '#90cdf4', '#63b3ed', '#4299e1'];
+    const darkShades = ['#1A202C', '#2C5282', '#2B6CB0', '#3182CE', '#63B3ED'];
     return dark ? darkShades[level] : lightShades[level];
 };
 
@@ -38,18 +44,18 @@ function HabitCard({ title, desc, darkTheme }:{ title:string, desc:string, darkT
                     gridTemplateColumns: `repeat(${NUM_OF_WEEKS}, 1fr)`,
                     gridTemplateRows: `repeat(${DAYS_PER_WEEK}, 1fr)`,
                     gap: 0.5,
-                    width: 'fit-content',
+                    width: '100%',
                 }}
             >
                 {activity.map((level, i) => (
                     <Box
-                    key={i}
-                    sx={{
-                        width: 24,
-                        height: 24,
-                        bgcolor: getColor(level, darkTheme),
-                        borderRadius: '2px',
-                    }}
+                        key={i}
+                        sx={{
+                            width: '100%',
+                            aspectRatio: '1 / 1',
+                            bgcolor: getColor(level, darkTheme),
+                            borderRadius: '4px',
+                        }}
                     />
                 ))}
             </Box>
