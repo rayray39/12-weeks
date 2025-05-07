@@ -15,9 +15,7 @@ function MyApp() {
 
     // control the dialog's state to add a new habit
     const [openNewHabitDialog, setOpenNewHabitDialog] = useState<boolean>(false);
-
-    const [newHabitTitle, setNewHabitTitle] = useState<string>('');
-    const [newHabitDesc, setNewHabitDesc] = useState<string>('');
+    
     const [habits, setHabits] = useState<Habit[]>([]);
 
     // the color mode for material ui, based on selected theme
@@ -44,8 +42,6 @@ function MyApp() {
 
         if (newTitle && newDesc) {
             // take the new habit's title and description from the dialog
-            setNewHabitTitle(newTitle);
-            setNewHabitDesc(newDesc);
             console.log(`new habit title = ${newTitle}`);
             console.log(`new habit desc = ${newDesc}`);
 
