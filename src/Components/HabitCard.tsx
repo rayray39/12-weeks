@@ -46,9 +46,39 @@ function HabitCard({ title, desc, startDate, endDate, darkTheme }:{ title:string
         setOpenCommitDialog(true);
     }
 
-    const handleCloseCommitDialog = () => {
+    const handleConfirmCommitDialog = () => {
+        // closes the dialog to confirm user's commit to the habit
         setOpenCommitDialog(false);
+
+        const index = getTodayIndex();
+        console.log(`the index is ${index}`);
     }
+
+    const handleCancelCommitDialog = () => {
+        setOpenCommitDialog(false);
+        console.log('cancelling commit to habit...');
+    }
+
+    const getTodayIndex = () => {
+        // returns the index in habitContribution, based on today's date from the startDate
+        const [day, month, year] = startDate.split('-').map(Number);
+        const startDateObject = new Date(year, month - 1, day);
+
+        const today = new Date();
+
+        // Clear time for both dates to ensure whole-day difference
+        startDateObject.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
+
+        const diffInMs = today.getTime() - startDateObject.getTime();
+        const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+        if (diffInDays < 0 || diffInDays >= NUM_OF_WEEKS * DAYS_PER_WEEK) {
+            return null; // out of range
+        }
+
+        return diffInDays;
+    };
 
     return <Card sx={{
         bgcolor: darkTheme ? '#4D4D4D' : '#E6E6E6'
@@ -89,7 +119,7 @@ function HabitCard({ title, desc, startDate, endDate, darkTheme }:{ title:string
 
             <Dialog
                 open={openCommitDialog}
-                onClose={handleCloseCommitDialog}
+                onClose={handleCancelCommitDialog}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
                 slots={{transition:Transition}}
@@ -103,8 +133,8 @@ function HabitCard({ title, desc, startDate, endDate, darkTheme }:{ title:string
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseCommitDialog}>Cancel</Button>
-                    <Button onClick={handleCloseCommitDialog} autoFocus>
+                    <Button onClick={handleCancelCommitDialog}>Cancel</Button>
+                    <Button onClick={handleConfirmCommitDialog} autoFocus>
                         Confirm
                     </Button>
                 </DialogActions>
