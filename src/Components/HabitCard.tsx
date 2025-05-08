@@ -16,6 +16,7 @@ const NUM_OF_WEEKS = 12;
 const DAYS_PER_WEEK = 7;
   
 const getColor = (level: number) => {
+    // returns the color based on the intensity level of the contribution graph
     if (level < 0) {
         level = 0;
     }
@@ -27,6 +28,7 @@ const getColor = (level: number) => {
 };
 
 const Transition = forwardRef(function Transition(
+    // transition for dialog
     props: TransitionProps & {
         children: React.ReactElement<any, any>;
     },
@@ -35,9 +37,7 @@ const Transition = forwardRef(function Transition(
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function HabitCard({ title, desc, startDate, endDate, darkTheme }:{ title:string, desc:string, startDate:string, endDate:string, darkTheme:boolean }) {
-    // github style contribution graph, each element has a default value of 0
-    const [habitContribution, setHabitContribution] = useState<number[]>(new Array(NUM_OF_WEEKS * DAYS_PER_WEEK).fill(0))
+function HabitCard({ title, desc, startDate, endDate, habitContribution, darkTheme }:{ title:string, desc:string, startDate:string, endDate:string, habitContribution:number[], darkTheme:boolean }) {
 
     // opens the diaplog to confirm commit to habit for today
     const [openCommitDialog, setOpenCommitDialog] = useState<boolean>(false);
@@ -57,11 +57,7 @@ function HabitCard({ title, desc, startDate, endDate, darkTheme }:{ title:string
 
         if (index !== null) {
             // updates the intensity level of the habitContribution to display appropriate color
-            setHabitContribution(prev => {
-                const updated = [...prev];
-                updated[index] = Math.min(prev[index] + 1, 4); // max out at intensity level 4
-                return updated;
-            });
+            habitContribution[index] = Math.min(habitContribution[index] + 1, 4) // max out at intensity level 4
         }
     }
 
