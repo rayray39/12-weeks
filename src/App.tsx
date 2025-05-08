@@ -9,6 +9,9 @@ import Habits from "./Components/Habits";
 import NewHabitDialog from "./Components/NewHabitDialog";
 import { Habit } from "./Types/types";
 
+const NUM_OF_WEEKS = 12;
+const DAYS_PER_WEEK = 7;
+
 function MyApp() {
     // theme selected by the user from the switch component, true = dark, false = light
     const [darkTheme, setDarkTheme] = useState<boolean>(false);
@@ -44,13 +47,19 @@ function MyApp() {
             // take the new habit's title and description from the dialog
             console.log(`new habit title = ${newTitle}`);
             console.log(`new habit desc = ${newDesc}`);
+            console.log(`new habit starts on = ${newStartDate}`);
+            console.log(`new habit ends on = ${newEndDate}`);
+
+            // github style contribution graph, each element has a default value of 0
+            const newHabitContribution = new Array(NUM_OF_WEEKS * DAYS_PER_WEEK).fill(0);
 
             // create new habit object and add to list
             const newHabit:Habit = {
                 title: newTitle,
                 desc: newDesc,
                 startDate: newStartDate,
-                endDate: newEndDate
+                endDate: newEndDate,
+                habitContribution: newHabitContribution
             }
             setHabits((prev) => [...prev, newHabit]);
             console.log('new habit successfully added to list');
