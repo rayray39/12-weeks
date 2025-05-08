@@ -57,7 +57,7 @@ function Habits({ darkTheme, habits }:{ darkTheme:boolean, habits:Habit[] }) {
                     // border:'1px solid black',
                     padding:'20px',
                     marginTop:'20px',
-                    maxHeight: '400px', // Adjust to fit your layout
+                    maxHeight: '504px', // Adjust to fit your layout
                     overflowY: 'auto',
                     bgcolor: darkTheme ? '#4D4D4D' : '#E6E6E6',
                     borderRadius: '4px'
