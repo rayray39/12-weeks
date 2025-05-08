@@ -109,6 +109,8 @@ function HabitCard({ title, desc, startDate, endDate, habitContribution, darkThe
                     gridTemplateRows: `repeat(${DAYS_PER_WEEK}, 1fr)`,
                     gap: 0.5,
                     width: '100%',
+                    marginBottom: '20px',
+                    marginTop: '20px'
                 }}
             >
                 {
