@@ -9,15 +9,16 @@ import Habits from "./Components/Habits";
 import NewHabitDialog from "./Components/NewHabitDialog";
 import { Habit } from "./Types/types";
 
+const NUM_OF_WEEKS = 12;
+const DAYS_PER_WEEK = 7;
+
 function MyApp() {
     // theme selected by the user from the switch component, true = dark, false = light
-    const [theme, setTheme] = useState<boolean>(false);
+    const [darkTheme, setDarkTheme] = useState<boolean>(false);
 
     // control the dialog's state to add a new habit
     const [openNewHabitDialog, setOpenNewHabitDialog] = useState<boolean>(false);
 
-    const [newHabitTitle, setNewHabitTitle] = useState<string>('');
-    const [newHabitDesc, setNewHabitDesc] = useState<string>('');
     const [habits, setHabits] = useState<Habit[]>([]);
 
     // the color mode for material ui, based on selected theme
@@ -28,7 +29,7 @@ function MyApp() {
 
     const handleNewTheme = (event: React.ChangeEvent<HTMLInputElement>) => {
         // changes the mode of the app
-        setTheme(event.target.checked);
+        setDarkTheme(event.target.checked);
 
         if (event.target.checked) {
             setMode('dark');
@@ -37,22 +38,28 @@ function MyApp() {
         }
     }
 
-    const handleCloseNewHabitDialog = (newTitle:string, newDesc:string) => {
+    const handleCloseNewHabitDialog = (newTitle:string, newDesc:string, newStartDate:string, newEndDate:string) => {
         // close the dialog for adding new habit
         console.log('closing new habit dialog')
         setOpenNewHabitDialog(false);
 
-        if (newTitle && newDesc) {
+        if (newTitle && newDesc && newStartDate && newEndDate) {
             // take the new habit's title and description from the dialog
-            setNewHabitTitle(newTitle);
-            setNewHabitDesc(newDesc);
             console.log(`new habit title = ${newTitle}`);
             console.log(`new habit desc = ${newDesc}`);
+            console.log(`new habit starts on = ${newStartDate}`);
+            console.log(`new habit ends on = ${newEndDate}`);
+
+            // github style contribution graph, each element has a default value of 0
+            const newHabitContribution = new Array(NUM_OF_WEEKS * DAYS_PER_WEEK).fill(0);
 
             // create new habit object and add to list
             const newHabit:Habit = {
                 title: newTitle,
-                desc: newDesc
+                desc: newDesc,
+                startDate: newStartDate,
+                endDate: newEndDate,
+                habitContribution: newHabitContribution
             }
             setHabits((prev) => [...prev, newHabit]);
             console.log('new habit successfully added to list');
@@ -75,12 +82,12 @@ function MyApp() {
     }}>
         <FormControl>
             <FormControlLabel 
-                control={<Switch value={theme} onChange={handleNewTheme} color="default"></Switch>} label='🌗'/>
+                control={<Switch value={darkTheme} onChange={handleNewTheme} color="default"></Switch>} label='🌗'/>
         </FormControl>
 
         <NewHabitDialog open={openNewHabitDialog} handleOpen={addNewHabit} handleClose={handleCloseNewHabitDialog} />
 
-        <Habits theme={theme} habits={habits} />
+        <Habits darkTheme={darkTheme} habits={habits} />
     </Box>
 }
 

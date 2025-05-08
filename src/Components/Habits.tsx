@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import HabitCard from "./HabitCard.tsx"
 
 // main display area for all the habits
-function Habits({ theme, habits }:{ theme:boolean, habits:Habit[] }) {
+function Habits({ darkTheme, habits }:{ darkTheme:boolean, habits:Habit[] }) {
     const [displayedHabit, setDisplayedHabit] = useState<Habit>();
 
     useEffect(() => {
@@ -27,10 +27,10 @@ function Habits({ theme, habits }:{ theme:boolean, habits:Habit[] }) {
         alignItems:'center'
     }}>
         <Box sx={{
-            border: theme ? '1px solid white' : '1px solid black',
+            border: darkTheme ? '1px solid white' : '1px solid black',
             borderRadius: '8px',
             width:'800px',
-            height:'400px',
+            height:'520px',
             display:'flex',
             justifyContent:'center'
         }}>
@@ -40,7 +40,14 @@ function Habits({ theme, habits }:{ theme:boolean, habits:Habit[] }) {
                 width:'600px'
             }}>{
                 displayedHabit ?
-                    <HabitCard title={displayedHabit.title} desc={displayedHabit.desc} /> :
+                    <HabitCard 
+                        title={displayedHabit.title} 
+                        desc={displayedHabit.desc}
+                        startDate={displayedHabit.startDate}
+                        endDate={displayedHabit.endDate}
+                        habitContribution={displayedHabit.habitContribution}
+                        darkTheme={darkTheme} 
+                    /> :
                     'no habits'
                 }
             </Box>
