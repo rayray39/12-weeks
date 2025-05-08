@@ -45,6 +45,7 @@ function Habits({ darkTheme, habits }:{ darkTheme:boolean, habits:Habit[] }) {
                         desc={displayedHabit.desc}
                         startDate={displayedHabit.startDate}
                         endDate={displayedHabit.endDate}
+                        habitContribution={displayedHabit.habitContribution}
                         darkTheme={darkTheme} 
                     /> :
                     'no habits'
