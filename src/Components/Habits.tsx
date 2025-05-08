@@ -52,27 +52,31 @@ function Habits({ darkTheme, habits }:{ darkTheme:boolean, habits:Habit[] }) {
                 }
             </Box>
            
-            <Stack spacing={1} sx={{
-                // border:'1px solid black',
-                padding:'20px',
-                marginLeft:'20px',
-                maxHeight: '400px', // Adjust to fit your layout
-                overflowY: 'auto',
-            }}>
-                {
-                    habits.map((habit, index) => (
-                        <Button key={index}
-                            sx={{
-                                maxHeight:'40px'
-                            }}
-                            onClick={() => handleSelectHabit(index)} 
-                            disableElevation 
-                            variant="contained">
-                                {habit.title.length > 10 ? `${habit.title.slice(0, 10)}...` : habit.title}
-                        </Button>
-                    ))
-                }
-            </Stack>
+            {
+                habits.length > 0 && <Stack spacing={1} sx={{
+                    // border:'1px solid black',
+                    padding:'20px',
+                    marginTop:'20px',
+                    maxHeight: '400px', // Adjust to fit your layout
+                    overflowY: 'auto',
+                    bgcolor: darkTheme ? '#4D4D4D' : '#E6E6E6',
+                    borderRadius: '4px'
+                }}>
+                    {
+                        habits.map((habit, index) => (
+                            <Button key={index}
+                                sx={{
+                                    maxHeight:'40px'
+                                }}
+                                onClick={() => handleSelectHabit(index)} 
+                                disableElevation 
+                                variant="contained">
+                                    {habit.title.length > 10 ? `${habit.title.slice(0, 10)}...` : habit.title}
+                            </Button>
+                        ))
+                    }
+                </Stack>
+            }
         </Box>
     </Box>
 }
