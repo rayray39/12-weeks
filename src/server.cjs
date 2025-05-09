@@ -72,7 +72,25 @@ app.post('/add-new-habit', (req, res) => {
 })
 
 // update the commit of the habit in habits array
+app.post('/update-habit-contribution/:id', (req, res) => {
+    const { id } = req.params;
+    const { newHabitContribution } = req.body;
 
+    if (!id || !newHabitContribution) {
+        return res.status(400).json({ message: 'Missing id or habitContribution array.' });
+    }
+
+    const query = 'UPDATE habits SET habitContribution = ? WHERE id = ?';
+    const values = [JSON.stringify(newHabitContribution), id];
+
+    db.run(query, values, function(err) {
+        if (err) {
+            return res.status(500).json({ message: 'Server error: Unable to update commit of habit.' });
+        } else {
+            return res.status(200).json({ message: 'Successfully updated commit of contribution array.' });
+        }
+    })
+})
 
 
 // Start server
