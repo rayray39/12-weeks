@@ -43,6 +43,7 @@ app.get('/get-all-habits', (req, res) => {
         } else {
             const parsedRows = rows.map(row => ({
                 ...row,
+                desc: row.description,
                 habitContribution: JSON.parse(row.habitContribution)
             }));
             return res.status(200).json({ allHabits: parsedRows, message: 'Successfully fetched all habits.' });
