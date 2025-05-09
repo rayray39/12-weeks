@@ -48,6 +48,24 @@ function HabitCard({ title, desc, startDate, endDate, habitContribution, darkThe
         setOpenCommitDialog(true);
     }
 
+    const updateCommitOfHabit = async (newHabitContribution:number[], index:number) => {
+        const response = await fetch(`http://localhost:5000/update-habit-contribution/${index}`, {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+                newHabitContribution: newHabitContribution
+            })
+        })
+
+        if (!response.ok) {
+            console.log("Error in updating commit of habit.");
+            return;
+        }
+
+        const data = await response.json();
+        console.log(data.message);
+    }
+
     const handleConfirmCommitDialog = () => {
         // closes the dialog to confirm user's commit to the habit
         setOpenCommitDialog(false);
@@ -55,10 +73,12 @@ function HabitCard({ title, desc, startDate, endDate, habitContribution, darkThe
         const index = getTodayIndex();
         console.log(`the index is ${index}`);
 
-        // TODO: update the commit of the habit
         if (index !== null) {
             // updates the intensity level of the habitContribution to display appropriate color
             habitContribution[index] = Math.min(habitContribution[index] + 1, 4) // max out at intensity level 4
+
+            // TODO: update the commit of the habit
+            updateCommitOfHabit(habitContribution, index);
         }
     }
 
