@@ -19,6 +19,7 @@ function MyApp() {
     // control the dialog's state to add a new habit
     const [openNewHabitDialog, setOpenNewHabitDialog] = useState<boolean>(false);
 
+    // TODO: fetch all the habits from the database and assign them to habits array
     const [habits, setHabits] = useState<Habit[]>([]);
 
     // the color mode for material ui, based on selected theme
@@ -62,6 +63,9 @@ function MyApp() {
                 habitContribution: newHabitContribution
             }
             setHabits((prev) => [...prev, newHabit]);
+
+            // TODO: add call to server to add new habit into habits table
+
             console.log('new habit successfully added to list');
         } else {
             console.log('title or desc is empty');

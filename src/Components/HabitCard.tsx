@@ -55,6 +55,7 @@ function HabitCard({ title, desc, startDate, endDate, habitContribution, darkThe
         const index = getTodayIndex();
         console.log(`the index is ${index}`);
 
+        // TODO: update the commit of the habit
         if (index !== null) {
             // updates the intensity level of the habitContribution to display appropriate color
             habitContribution[index] = Math.min(habitContribution[index] + 1, 4) // max out at intensity level 4
