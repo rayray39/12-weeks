@@ -41,8 +41,11 @@ app.get('/get-all-habits', (req, res) => {
         if (err) {
             return res.status(500).json({ message: 'Server error: Unable to fetch data in habits table.' });
         } else {
-            
-            return res.status(200).json({ allHabits: rows, message: 'Successfully fetched all habits.' });
+            const parsedRows = rows.map(row => ({
+                ...row,
+                habitContribution: JSON.parse(row.habitContribution)
+            }));
+            return res.status(200).json({ allHabits: parsedRows, message: 'Successfully fetched all habits.' });
         }
     })
 })
