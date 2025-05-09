@@ -41,6 +41,7 @@ app.get('/get-all-habits', (req, res) => {
         if (err) {
             return res.status(500).json({ message: 'Server error: Unable to fetch data in habits table.' });
         } else {
+            
             return res.status(200).json({ allHabits: rows, message: 'Successfully fetched all habits.' });
         }
     })
@@ -55,8 +56,9 @@ app.post('/add-new-habit', (req, res) => {
     }
 
     const query = 'INSERT INTO habits (title, description, startDate, endDate, habitContribution) VALUES (?, ?, ?, ?, ?)';
+    const values = [title, description, startDate, endDate, JSON.stringify(habitContribution)];
 
-    db.run(query, [title, description, startDate, endDate, habitContribution], function (err) {
+    db.run(query, values, function (err) {
         if (err) {
             return res.status(500).json({ message: 'Server error: Unable to add new habit into database.' });
         } else {
