@@ -2,7 +2,7 @@ import Box from "@mui/material/Box"
 import Switch from "@mui/material/Switch"
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { createTheme, ThemeProvider, useColorScheme } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import Habits from "./Components/Habits";
@@ -19,8 +19,29 @@ function MyApp() {
     // control the dialog's state to add a new habit
     const [openNewHabitDialog, setOpenNewHabitDialog] = useState<boolean>(false);
 
-    // TODO: fetch all the habits from the database and assign them to habits array
+    // fetch all the habits from the database and assign them to habits array
     const [habits, setHabits] = useState<Habit[]>([]);
+
+    // get all the habits from the database on mounting
+    const fetchAllHabits = async () => {
+        const response = await fetch('http://localhost:5000/get-all-habits', {
+            method:'GET',
+            headers:{'Content-Type': 'application/json'}
+        })
+
+        if (!response.ok) {
+            console.log("Error fetching all habits from database.");
+            return;
+        }
+
+        const data = await response.json();
+        console.log(data.message);
+        setHabits(data.allHabits);
+    }
+
+    useEffect(() => {
+        fetchAllHabits();
+    }, [])
 
     // the color mode for material ui, based on selected theme
     const { mode, setMode } = useColorScheme();
@@ -37,6 +58,29 @@ function MyApp() {
         } else {
             setMode('light');
         }
+    }
+
+    // add new habit into habits table in database
+    const addNewHabitToDatabase = async (newTitle:string, newDesc:string, newStartDate:string, newEndDate:string, newHabitContribution:number[]) => {
+        const response = await fetch('http://localhost:5000/add-new-habit', {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+                title: newTitle,
+                description: newDesc,
+                startDate: newStartDate,
+                endDate: newEndDate,
+                habitContribution: newHabitContribution,
+            })
+        })
+
+        if (!response.ok) {
+            console.log('Error adding new habit to database.');
+            return;
+        }
+
+        const data = await response.json();
+        console.log(data.message);
     }
 
     const handleCloseNewHabitDialog = (newTitle:string, newDesc:string, newStartDate:string, newEndDate:string) => {
@@ -64,7 +108,8 @@ function MyApp() {
             }
             setHabits((prev) => [...prev, newHabit]);
 
-            // TODO: add call to server to add new habit into habits table
+            // add call to server to add new habit into habits table
+            addNewHabitToDatabase(newTitle, newDesc, newStartDate, newEndDate, newHabitContribution);
 
             console.log('new habit successfully added to list');
         } else {
