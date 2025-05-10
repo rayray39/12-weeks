@@ -35,7 +35,7 @@ db.run(`
 
 // get all the Habit objects in the database and populate the habits array in App.tsx`
 app.get('/get-all-habits', (req, res) => {
-    const query = 'SELECT title, description, startDate, endDate, habitContribution FROM habits';
+    const query = 'SELECT id, title, description, startDate, endDate, habitContribution FROM habits';
 
     db.all(query, [], (err, rows) => {
         if (err) {
