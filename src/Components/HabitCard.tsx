@@ -109,6 +109,10 @@ function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContributio
         return diffInDays;
     };
 
+    const deleteHabit = () => {
+        console.log(`deleting habit, id = ${idOfCard}`);
+    }
+
     return <Card sx={{
         bgcolor: darkTheme ? '#4D4D4D' : '#E6E6E6'
     }}>
@@ -146,7 +150,14 @@ function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContributio
                 }
             </Box>
 
-            <Button variant="contained" disableElevation onClick={handleCommit}>Commit Today</Button>
+            <Box sx={{
+                display:'flex',
+                justifyContent:'space-between'
+            }}>
+                <Button variant="contained" disableElevation onClick={handleCommit}>Commit Today</Button>
+
+                <Button disableElevation onClick={deleteHabit}>Delete</Button>
+            </Box>
 
             <Dialog
                 open={openCommitDialog}
