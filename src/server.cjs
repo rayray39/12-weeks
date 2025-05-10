@@ -92,6 +92,25 @@ app.post('/update-habit-contribution/:id', (req, res) => {
     })
 })
 
+// deletes the habit from the database
+app.delete('/delete-habit/:id', (req, res) => {
+    const { id } = req.params;
+
+    if (!id) {
+        return res.status(400).json({ message: 'Missing id.' });
+    }
+
+    const query = 'DELETE FROM habits WHERE id = ?';
+
+    db.run(query, [id], function(err) {
+        if (err) {
+            return res.status(500).json({ message: 'Server error: Unable to delete the habit.' });
+        } else {
+            return res.status(200).json({ message: 'Successfully deleted habit from database.' });
+        }
+    })
+})
+
 
 // Start server
 app.listen(PORT, () => {
