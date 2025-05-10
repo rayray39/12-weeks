@@ -37,7 +37,7 @@ const Transition = forwardRef(function Transition(
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContribution, darkTheme }:{ idOfCard:number, title:string, desc:string, startDate:string, endDate:string, habitContribution:number[], darkTheme:boolean }) {
+function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContribution, darkTheme, onDeleteHabit }:{ idOfCard:number, title:string, desc:string, startDate:string, endDate:string, habitContribution:number[], darkTheme:boolean, onDeleteHabit:(id:number)=>void }) {
 
     // opens the diaplog to confirm commit to habit for today
     const [openCommitDialog, setOpenCommitDialog] = useState<boolean>(false);
@@ -145,6 +145,7 @@ function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContributio
 
         const data = await response.json();
         console.log(data.message);
+        onDeleteHabit(idOfCard);
     }
 
     return <Card sx={{

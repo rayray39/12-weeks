@@ -128,6 +128,11 @@ function MyApp() {
         setOpenNewHabitDialog(true);
     }
 
+    const onDeleteHabit = (id:number) => {
+        console.log('deleting habit, updating frontend...');
+        setHabits(prev => prev.filter(habit => habit.id !== id));
+    }
+
     return <Box sx={{
         display:'flex',
         flexDirection: 'column',
@@ -141,7 +146,7 @@ function MyApp() {
 
         <NewHabitDialog open={openNewHabitDialog} handleOpen={addNewHabit} handleClose={handleCloseNewHabitDialog} />
 
-        <Habits darkTheme={darkTheme} habits={habits} />
+        <Habits darkTheme={darkTheme} habits={habits} onDeleteHabit={onDeleteHabit} />
     </Box>
 }
 
