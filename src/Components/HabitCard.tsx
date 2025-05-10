@@ -37,10 +37,34 @@ const Transition = forwardRef(function Transition(
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContribution, darkTheme }:{ idOfCard:number, title:string, desc:string, startDate:string, endDate:string, habitContribution:number[], darkTheme:boolean }) {
+function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContribution, darkTheme, onDeleteHabit }:{ idOfCard:number, title:string, desc:string, startDate:string, endDate:string, habitContribution:number[], darkTheme:boolean, onDeleteHabit:(id:number)=>void }) {
 
     // opens the diaplog to confirm commit to habit for today
     const [openCommitDialog, setOpenCommitDialog] = useState<boolean>(false);
+
+    // opens the dialog to confirm deletion of habit
+    const [openDeleteHabitDialog, setOpenDeleteHabitDialog] = useState<boolean>(false);
+
+    const getTodayIndex = () => {
+        // returns the index in habitContribution, based on today's date from the startDate
+        const [day, month, year] = startDate.split('-').map(Number);
+        const startDateObject = new Date(year, month - 1, day);
+
+        const today = new Date();
+
+        // Clear time for both dates to ensure whole-day difference
+        startDateObject.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
+
+        const diffInMs = today.getTime() - startDateObject.getTime();
+        const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+
+        if (diffInDays < 0 || diffInDays >= NUM_OF_WEEKS * DAYS_PER_WEEK) {
+            return null; // out of range
+        }
+
+        return diffInDays;
+    };
 
     const handleCommit = () => {
         // opens the dialog to confirm user's commit to the habit for today
@@ -88,26 +112,41 @@ function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContributio
         console.log('cancelling commit to habit...');
     }
 
-    const getTodayIndex = () => {
-        // returns the index in habitContribution, based on today's date from the startDate
-        const [day, month, year] = startDate.split('-').map(Number);
-        const startDateObject = new Date(year, month - 1, day);
+    const handleOpenDeleteDialog = () => {
+        // opens the dialog to ask user for confirmation on deleting habit
+        console.log('deleting habit...');
+        setOpenDeleteHabitDialog(true);
+    }
 
-        const today = new Date();
+    const handleCancelDelete = () => {
+        // closes the dialog if the user cancels the commit to be deleted
+        setOpenDeleteHabitDialog(false);
+        console.log('cancelling deletion of habit...');
+    }
 
-        // Clear time for both dates to ensure whole-day difference
-        startDateObject.setHours(0, 0, 0, 0);
-        today.setHours(0, 0, 0, 0);
+    const handleConfirmDelete = () => {
+        // deletes the habit from the database once the confirm button is clicked on
+        console.log(`deleting habit, id = ${idOfCard}`);
+        deleteHabit();
+        setOpenDeleteHabitDialog(false);
+    }
 
-        const diffInMs = today.getTime() - startDateObject.getTime();
-        const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+    // deletes the habit from the database
+    const deleteHabit = async () => {
+        const response = await fetch(`http://localhost:5000/delete-habit/${idOfCard}`, {
+            method:'DELETE',
+            headers:{'Content-Type':'application/json'}
+        })
 
-        if (diffInDays < 0 || diffInDays >= NUM_OF_WEEKS * DAYS_PER_WEEK) {
-            return null; // out of range
+        if (!response.ok){
+            console.log('Error occurred, failed to delete habit.');
+            return;
         }
 
-        return diffInDays;
-    };
+        const data = await response.json();
+        console.log(data.message);
+        onDeleteHabit(idOfCard);
+    }
 
     return <Card sx={{
         bgcolor: darkTheme ? '#4D4D4D' : '#E6E6E6'
@@ -146,8 +185,16 @@ function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContributio
                 }
             </Box>
 
-            <Button variant="contained" disableElevation onClick={handleCommit}>Commit Today</Button>
+            <Box sx={{
+                display:'flex',
+                justifyContent:'space-between'
+            }}>
+                <Button variant="contained" disableElevation onClick={handleCommit}>Commit Today</Button>
 
+                <Button disableElevation onClick={handleOpenDeleteDialog}>Delete</Button>
+            </Box>
+
+            {/* dialog opens for habit commit */}
             <Dialog
                 open={openCommitDialog}
                 onClose={handleCancelCommitDialog}
@@ -166,6 +213,27 @@ function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContributio
                 <DialogActions>
                     <Button onClick={handleCancelCommitDialog}>Cancel</Button>
                     <Button onClick={handleConfirmCommitDialog} autoFocus>
+                        Confirm
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* dialog opens for deleting habit */}
+            <Dialog
+                open={openDeleteHabitDialog}
+                onClose={handleCancelDelete}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+                slots={{transition:Transition}}
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Are you sure you want to delete this habit?"}
+                </DialogTitle>
+                <DialogContent>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCancelDelete}>Cancel</Button>
+                    <Button onClick={handleConfirmDelete} autoFocus>
                         Confirm
                     </Button>
                 </DialogActions>

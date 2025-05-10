@@ -22,6 +22,8 @@ function MyApp() {
     // fetch all the habits from the database and assign them to habits array
     const [habits, setHabits] = useState<Habit[]>([]);
 
+    const [latestHabitId, setLatestHabitId] = useState<number>(1);
+
     // get all the habits from the database on mounting
     const fetchAllHabits = async () => {
         const response = await fetch('http://localhost:5000/get-all-habits', {
@@ -100,6 +102,7 @@ function MyApp() {
 
             // create new habit object and add to list
             const newHabit:Habit = {
+                id: latestHabitId,
                 title: newTitle,
                 desc: newDesc,
                 startDate: newStartDate,
@@ -107,6 +110,8 @@ function MyApp() {
                 habitContribution: newHabitContribution
             }
             setHabits((prev) => [...prev, newHabit]);
+            
+            setLatestHabitId(prev => (prev + 1));
 
             // add call to server to add new habit into habits table
             addNewHabitToDatabase(newTitle, newDesc, newStartDate, newEndDate, newHabitContribution);
@@ -123,6 +128,11 @@ function MyApp() {
         setOpenNewHabitDialog(true);
     }
 
+    const onDeleteHabit = (id:number) => {
+        console.log('deleting habit, updating frontend...');
+        setHabits(prev => prev.filter(habit => habit.id !== id));
+    }
+
     return <Box sx={{
         display:'flex',
         flexDirection: 'column',
@@ -136,7 +146,7 @@ function MyApp() {
 
         <NewHabitDialog open={openNewHabitDialog} handleOpen={addNewHabit} handleClose={handleCloseNewHabitDialog} />
 
-        <Habits darkTheme={darkTheme} habits={habits} />
+        <Habits darkTheme={darkTheme} habits={habits} onDeleteHabit={onDeleteHabit} />
     </Box>
 }
 
