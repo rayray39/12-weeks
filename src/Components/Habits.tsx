@@ -6,12 +6,12 @@ import { useEffect, useState } from "react"
 import HabitCard from "./HabitCard.tsx"
 
 // main display area for all the habits
-function Habits({ darkTheme, habits }:{ darkTheme:boolean, habits:Habit[] }) {
+function Habits({ darkTheme, habits, onDeleteHabit }:{ darkTheme:boolean, habits:Habit[], onDeleteHabit:(id:number) => void }) {
     const [displayedHabit, setDisplayedHabit] = useState<Habit>();
 
     useEffect(() => {
         // the first habit is displayed as soon as it is added into the habits array
-        if (habits.length > 0 && !displayedHabit) {
+        if (habits.length > 0) {
             setDisplayedHabit(habits[0]);
         }
     }, [habits])
@@ -48,6 +48,7 @@ function Habits({ darkTheme, habits }:{ darkTheme:boolean, habits:Habit[] }) {
                         endDate={displayedHabit.endDate}
                         habitContribution={displayedHabit.habitContribution}
                         darkTheme={darkTheme} 
+                        onDeleteHabit={onDeleteHabit}
                     /> :
                     'no habits'
                 }
