@@ -37,7 +37,7 @@ const Transition = forwardRef(function Transition(
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function HabitCard({ title, desc, startDate, endDate, habitContribution, darkTheme }:{ title:string, desc:string, startDate:string, endDate:string, habitContribution:number[], darkTheme:boolean }) {
+function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContribution, darkTheme }:{ idOfCard:number, title:string, desc:string, startDate:string, endDate:string, habitContribution:number[], darkTheme:boolean }) {
 
     // opens the diaplog to confirm commit to habit for today
     const [openCommitDialog, setOpenCommitDialog] = useState<boolean>(false);
@@ -46,6 +46,24 @@ function HabitCard({ title, desc, startDate, endDate, habitContribution, darkThe
         // opens the dialog to confirm user's commit to the habit for today
         console.log('commiting today...');
         setOpenCommitDialog(true);
+    }
+
+    const updateCommitOfHabit = async (newHabitContribution:number[], idOfHabitCard:number) => {
+        const response = await fetch(`http://localhost:5000/update-habit-contribution/${idOfHabitCard}`, {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+                newHabitContribution: newHabitContribution
+            })
+        })
+
+        if (!response.ok) {
+            console.log("Error in updating commit of habit.");
+            return;
+        }
+
+        const data = await response.json();
+        console.log(data.message);
     }
 
     const handleConfirmCommitDialog = () => {
@@ -58,6 +76,9 @@ function HabitCard({ title, desc, startDate, endDate, habitContribution, darkThe
         if (index !== null) {
             // updates the intensity level of the habitContribution to display appropriate color
             habitContribution[index] = Math.min(habitContribution[index] + 1, 4) // max out at intensity level 4
+
+            // TODO: update the commit of the habit
+            updateCommitOfHabit(habitContribution, idOfCard);
         }
     }
 

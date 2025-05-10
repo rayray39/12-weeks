@@ -8,17 +8,20 @@ import HabitCard from "./HabitCard.tsx"
 // main display area for all the habits
 function Habits({ darkTheme, habits }:{ darkTheme:boolean, habits:Habit[] }) {
     const [displayedHabit, setDisplayedHabit] = useState<Habit>();
+    const [idOfDisplayedHabit, setIdOfDisplayedHabit] = useState<number>(0);
 
     useEffect(() => {
         // the first habit is displayed as soon as it is added into the habits array
         if (habits.length > 0 && !displayedHabit) {
             setDisplayedHabit(habits[0]);
+            setIdOfDisplayedHabit(1);
         }
     }, [habits])
 
     const handleSelectHabit = (index:number) => {
         console.log(`habit ${index} is being displayed`);
         setDisplayedHabit(habits[index]);
+        setIdOfDisplayedHabit(index+1);
     }
 
     return <Box sx={{
@@ -40,7 +43,8 @@ function Habits({ darkTheme, habits }:{ darkTheme:boolean, habits:Habit[] }) {
                 width:'600px'
             }}>{
                 displayedHabit ?
-                    <HabitCard 
+                    <HabitCard
+                        idOfCard={idOfDisplayedHabit}
                         title={displayedHabit.title} 
                         desc={displayedHabit.desc}
                         startDate={displayedHabit.startDate}

@@ -33,6 +33,65 @@ db.run(`
 });
 
 
+// get all the Habit objects in the database and populate the habits array in App.tsx`
+app.get('/get-all-habits', (req, res) => {
+    const query = 'SELECT title, description, startDate, endDate, habitContribution FROM habits';
+
+    db.all(query, [], (err, rows) => {
+        if (err) {
+            return res.status(500).json({ message: 'Server error: Unable to fetch data in habits table.' });
+        } else {
+            const parsedRows = rows.map(row => ({
+                ...row,
+                desc: row.description,
+                habitContribution: JSON.parse(row.habitContribution)
+            }));
+            return res.status(200).json({ allHabits: parsedRows, message: 'Successfully fetched all habits.' });
+        }
+    })
+})
+
+// add a new habit into the habits array in App.tsx
+app.post('/add-new-habit', (req, res) => {
+    const { title, description, startDate, endDate, habitContribution } = req.body;
+
+    if (!title || !description || !startDate || !endDate || !habitContribution) {
+        return res.status(400).json({ message: 'Missing habit attribute(s), failed to add new habit.' });
+    }
+
+    const query = 'INSERT INTO habits (title, description, startDate, endDate, habitContribution) VALUES (?, ?, ?, ?, ?)';
+    const values = [title, description, startDate, endDate, JSON.stringify(habitContribution)];
+
+    db.run(query, values, function (err) {
+        if (err) {
+            return res.status(500).json({ message: 'Server error: Unable to add new habit into database.' });
+        } else {
+            return res.status(200).json({ message: 'Successfully added new habit into database.' });
+        }
+    })
+})
+
+// update the commit of the habit in habits array
+app.post('/update-habit-contribution/:id', (req, res) => {
+    const { id } = req.params;
+    const { newHabitContribution } = req.body;
+
+    if (!id || !newHabitContribution) {
+        return res.status(400).json({ message: 'Missing id or habitContribution array.' });
+    }
+
+    const query = 'UPDATE habits SET habitContribution = ? WHERE id = ?';
+    const values = [JSON.stringify(newHabitContribution), id];
+
+    db.run(query, values, function(err) {
+        if (err) {
+            return res.status(500).json({ message: 'Server error: Unable to update commit of habit.' });
+        } else {
+            return res.status(200).json({ message: 'Successfully updated commit of contribution array.' });
+        }
+    })
+})
+
 
 // Start server
 app.listen(PORT, () => {
