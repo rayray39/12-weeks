@@ -226,7 +226,7 @@ function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContributio
                 slots={{transition:Transition}}
             >
                 <DialogTitle id="alert-dialog-title">
-                    {"Delete this habit?"}
+                    {"Are you sure you want to delete this habit?"}
                 </DialogTitle>
                 <DialogContent>
                 </DialogContent>
