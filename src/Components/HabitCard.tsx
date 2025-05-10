@@ -109,8 +109,22 @@ function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContributio
         return diffInDays;
     };
 
-    const deleteHabit = () => {
+    // deletes the habit from the database
+    const deleteHabit = async () => {
         console.log(`deleting habit, id = ${idOfCard}`);
+
+        const response = await fetch(`http://localhost:5000/delete-habit/${idOfCard}`, {
+            method:'DELETE',
+            headers:{'Content-Type':'application/json'}
+        })
+
+        if (!response.ok){
+            console.log('Error occurred, failed to delete habit.');
+            return;
+        }
+
+        const data = await response.json();
+        console.log(data.message);
     }
 
     return <Card sx={{
