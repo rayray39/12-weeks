@@ -152,15 +152,26 @@ function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContributio
         bgcolor: darkTheme ? '#4D4D4D' : '#E6E6E6'
     }}>
         <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-                {title}
-            </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {`${startDate} - ${endDate}`}
-            </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {desc}
-            </Typography>
+            <Box sx={{
+                display:'flex',
+                justifyContent:'space-between'
+            }}>
+                <Box>
+                    <Typography gutterBottom variant="h5" component="div">
+                        {title}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                        {`${startDate} - ${endDate}`}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                        {desc}
+                    </Typography>
+                </Box>
+
+                <Button sx={{
+                    maxHeight:'40px'
+                }}>edit</Button>
+            </Box>
 
             <Box
                 sx={{
