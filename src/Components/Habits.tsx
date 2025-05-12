@@ -16,9 +16,10 @@ function Habits({ darkTheme, habits, onDeleteHabit }:{ darkTheme:boolean, habits
         }
     }, [habits])
 
-    const handleSelectHabit = (index:number) => {
-        console.log(`habit ${index} is being displayed`);
-        setDisplayedHabit(habits[index]);
+    const handleSelectHabit = (id:number) => {
+        console.log(`habit id = ${id} is being displayed`);
+        const selectedHabit = habits.filter((habit) => habit.id === id)[0];
+        setDisplayedHabit(selectedHabit);
     }
 
     return <Box sx={{
@@ -70,7 +71,7 @@ function Habits({ darkTheme, habits, onDeleteHabit }:{ darkTheme:boolean, habits
                                 sx={{
                                     maxHeight:'40px'
                                 }}
-                                onClick={() => handleSelectHabit(index)} 
+                                onClick={() => handleSelectHabit(habit.id)} 
                                 disableElevation 
                                 variant="contained">
                                     {habit.title.length > 10 ? `${habit.title.slice(0, 10)}...` : habit.title}
