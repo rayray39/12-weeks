@@ -111,6 +111,29 @@ app.delete('/delete-habit/:id', (req, res) => {
     })
 })
 
+// edits the title or descrption of the habit in the database
+app.post('/edit-habit/:id', (req, res) => {
+    const { id } = req.params;
+    const { editTitle, editDesc } = req.body;
+
+    if (!id) {
+        return res.status(400).json({ message: 'Missing id.' });
+    } else if (!editTitle && !editDesc) {
+        return res.status(400).json({ message: 'Missing edited title and description.'});
+    }
+
+    const query = 'UPDATE habits SET title = ?, description = ? WHERE id = ?';
+    const values = [editTitle, editDesc, id];
+
+    db.run(query, values, function(err) {
+        if (err) {
+            return res.status(500).json({ message: 'Server error: Unable to edit habit title or description.' });
+        } else {
+            return res.status(200).json({ message: 'Successfully edited habit title or description' });
+        }
+    })
+})
+
 
 // Start server
 app.listen(PORT, () => {

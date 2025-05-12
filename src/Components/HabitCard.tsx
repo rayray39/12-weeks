@@ -165,8 +165,26 @@ function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContributio
     }
 
     // submits the new title and description, closes the dialog
-    const confirmEditHabit = () => {
+    const confirmEditHabit = async (newTitle:string, newDesc:string) => {
         console.log('confirm edit habit...');
+
+        const response = await fetch(`http://localhost:5000/edit-habit/${idOfCard}`, {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({
+                editTitle: newTitle,
+                editDesc: newDesc
+            })
+        })
+
+        if (!response.ok) {
+            console.log('Error in editing habit title or description');
+            return;
+        }
+
+        const data = await response.json();
+        console.log(data.message);
+
         setOpenEditDialog(false);
     }
 
@@ -285,9 +303,9 @@ function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContributio
                         const formJson = Object.fromEntries((formData as any).entries());
                         const title = formJson.editTitle;
                         const desc = formJson.editDesc;
-                        // console.log(`title = ${editTitle}`);
-                        // console.log(`desc = ${editDesc}`);
-                        confirmEditHabit();
+                        console.log(`edited title = ${title}`);
+                        console.log(`edited desc = ${desc}`);
+                        confirmEditHabit(title, desc);
                     },
                 },
                 }}
