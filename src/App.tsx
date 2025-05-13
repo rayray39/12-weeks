@@ -133,6 +133,11 @@ function MyApp() {
         setHabits(prev => prev.filter(habit => habit.id !== id));
     }
 
+    const handleEditHabit = () => {
+        console.log('editing habit called in App.tsx ...');
+        fetchAllHabits();
+    }
+
     return <Box sx={{
         display:'flex',
         flexDirection: 'column',
@@ -146,7 +151,7 @@ function MyApp() {
 
         <NewHabitDialog open={openNewHabitDialog} handleOpen={addNewHabit} handleClose={handleCloseNewHabitDialog} />
 
-        <Habits darkTheme={darkTheme} habits={habits} onDeleteHabit={onDeleteHabit} />
+        <Habits darkTheme={darkTheme} habits={habits} onDeleteHabit={onDeleteHabit} handleEditHabit={handleEditHabit} />
     </Box>
 }
 

@@ -38,7 +38,7 @@ const Transition = forwardRef(function Transition(
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContribution, darkTheme, onDeleteHabit }:{ idOfCard:number, title:string, desc:string, startDate:string, endDate:string, habitContribution:number[], darkTheme:boolean, onDeleteHabit:(id:number)=>void }) {
+function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContribution, darkTheme, onDeleteHabit, handleEditHabit }:{ idOfCard:number, title:string, desc:string, startDate:string, endDate:string, habitContribution:number[], darkTheme:boolean, onDeleteHabit:(id:number)=>void, handleEditHabit:()=>void }) {
 
     // opens the diaplog to confirm commit to habit for today
     const [openCommitDialog, setOpenCommitDialog] = useState<boolean>(false);
@@ -185,6 +185,7 @@ function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContributio
         const data = await response.json();
         console.log(data.message);
 
+        handleEditHabit();  // fetch all the habits in the database (in App.tsx) to update the frontend
         setOpenEditDialog(false);
     }
 
