@@ -8,6 +8,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
+import TextField from "@mui/material/TextField";
 import { TransitionProps } from "@mui/material/transitions";
 import Typography from "@mui/material/Typography";
 import { forwardRef, useState } from "react";
@@ -37,13 +38,16 @@ const Transition = forwardRef(function Transition(
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContribution, darkTheme, onDeleteHabit }:{ idOfCard:number, title:string, desc:string, startDate:string, endDate:string, habitContribution:number[], darkTheme:boolean, onDeleteHabit:(id:number)=>void }) {
+function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContribution, darkTheme, onDeleteHabit, handleEditHabit }:{ idOfCard:number, title:string, desc:string, startDate:string, endDate:string, habitContribution:number[], darkTheme:boolean, onDeleteHabit:(id:number)=>void, handleEditHabit:()=>void }) {
 
     // opens the diaplog to confirm commit to habit for today
     const [openCommitDialog, setOpenCommitDialog] = useState<boolean>(false);
 
     // opens the dialog to confirm deletion of habit
     const [openDeleteHabitDialog, setOpenDeleteHabitDialog] = useState<boolean>(false);
+
+    // opens the dialog to edit the title and description
+    const [openEditDialog, setOpenEditDialog] = useState<boolean>(false);
 
     const getTodayIndex = () => {
         // returns the index in habitContribution, based on today's date from the startDate
@@ -148,19 +152,67 @@ function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContributio
         onDeleteHabit(idOfCard);
     }
 
+    // opens the dialog for editing habit details
+    const editHabit = () => {
+        console.log(`editing habit id = ${idOfCard}`);
+        setOpenEditDialog(true);
+    }
+
+    // closes the edit habit dialog, when the cancel button in the dialog is clicked on
+    const closeEditDialog = () => {
+        console.log('cancelling edit habit...');
+        setOpenEditDialog(false);
+    }
+
+    // submits the new title and description, closes the dialog
+    const confirmEditHabit = async (newTitle:string, newDesc:string) => {
+        console.log('confirm edit habit...');
+
+        const response = await fetch(`http://localhost:5000/edit-habit/${idOfCard}`, {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify({
+                editTitle: newTitle,
+                editDesc: newDesc
+            })
+        })
+
+        if (!response.ok) {
+            console.log('Error in editing habit title or description');
+            return;
+        }
+
+        const data = await response.json();
+        console.log(data.message);
+
+        handleEditHabit();  // fetch all the habits in the database (in App.tsx) to update the frontend
+        setOpenEditDialog(false);
+    }
+
     return <Card sx={{
         bgcolor: darkTheme ? '#4D4D4D' : '#E6E6E6'
     }}>
         <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
-                {title}
-            </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {`${startDate} - ${endDate}`}
-            </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {desc}
-            </Typography>
+            <Box sx={{
+                display:'flex',
+                justifyContent:'space-between'
+            }}>
+                <Box>
+                    <Typography gutterBottom variant="h5" component="div">
+                        {title}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                        {`${startDate} - ${endDate}`}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                        {desc}
+                    </Typography>
+                </Box>
+
+                <Button sx={{
+                    maxHeight:'40px'
+                }} onClick={editHabit}>edit</Button>
+            </Box>
 
             <Box
                 sx={{
@@ -236,6 +288,59 @@ function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContributio
                     <Button onClick={handleConfirmDelete} autoFocus>
                         Confirm
                     </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog
+                open={openEditDialog}
+                onClose={closeEditDialog}
+                slots={{transition: Transition}}
+                slotProps={{
+                paper: {
+                    component: 'form',
+                    onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
+                        event.preventDefault();
+                        const formData = new FormData(event.currentTarget);
+                        const formJson = Object.fromEntries((formData as any).entries());
+                        const title = formJson.editTitle;
+                        const desc = formJson.editDesc;
+                        console.log(`edited title = ${title}`);
+                        console.log(`edited desc = ${desc}`);
+                        confirmEditHabit(title, desc);
+                    },
+                },
+                }}
+            >
+                <DialogTitle>Edit habit details</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Existing Title
+                    </DialogContentText>
+                    <TextField
+                        id="edit-habit-title"
+                        name="editTitle"
+                        defaultValue={title}
+                        fullWidth
+                        variant="outlined"
+                    />
+                </DialogContent>
+
+                <DialogContent>
+                    <DialogContentText>
+                        Existing Description
+                    </DialogContentText>
+                    <TextField
+                        id="edit-habit-desc"
+                        name="editDesc"
+                        defaultValue={desc}
+                        fullWidth
+                        variant="outlined"
+                    />
+                </DialogContent>
+
+                <DialogActions>
+                    <Button onClick={closeEditDialog}>Cancel</Button>
+                    <Button type="submit">Confirm</Button>
                 </DialogActions>
             </Dialog>
 
