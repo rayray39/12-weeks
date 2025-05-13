@@ -32,12 +32,12 @@ function Habits({ darkTheme, habits, onDeleteHabit, handleEditHabit }:{ darkThem
             width:'800px',
             height:'560px',
             display:'flex',
-            justifyContent:'center'
+            justifyContent:'center',
         }}>
             <Box sx={{
-                // border:'1px solid black',
                 padding:'20px',
-                width:'600px'
+                width:'600px',
+                height:'100%'
             }}>{
                 displayedHabit ?
                     <HabitCard
@@ -57,13 +57,13 @@ function Habits({ darkTheme, habits, onDeleteHabit, handleEditHabit }:{ darkThem
            
             {
                 habits.length > 0 && <Stack spacing={1} sx={{
-                    // border:'1px solid black',
                     padding:'20px',
                     marginTop:'20px',
+                    // height:'100%',
                     maxHeight: '504px', // Adjust to fit your layout
                     overflowY: 'auto',
                     bgcolor: darkTheme ? '#4D4D4D' : '#E6E6E6',
-                    borderRadius: '4px'
+                    borderRadius: '4px',
                 }}>
                     {
                         habits.map((habit, index) => (
