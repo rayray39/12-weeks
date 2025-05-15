@@ -41,7 +41,9 @@ function NewHabitDialog({ open, handleOpen, handleClose }:{ open:boolean, handle
         flexDirection:'column',
         alignItems:'center'
     }}>
-        <Button
+        <Button sx={{
+            marginTop:'20px'
+        }}
             disableElevation
             variant="contained"
             onClick={handleOpen}>Add New Habit</Button>
