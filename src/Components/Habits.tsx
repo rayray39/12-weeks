@@ -23,65 +23,61 @@ function Habits({ darkTheme, habits, onDeleteHabit, handleEditHabit }:{ darkThem
     }
 
     return <Box sx={{
-        display:'flex',
-        flexDirection:'column',
-        alignItems:'center'
-    }}>
-        <Box sx={{
-            borderRadius: '8px',
-            width:'800px',
-            height:'560px',
-            display:'flex',
-            justifyContent:'center',
-        }}>
-            <Box sx={{
-                padding:'20px',
-                width:'600px',
-                height:'100%'
-            }}>{
-                displayedHabit ?
-                    <HabitCard
-                        idOfCard={displayedHabit.id}
-                        title={displayedHabit.title} 
-                        desc={displayedHabit.desc}
-                        startDate={displayedHabit.startDate}
-                        endDate={displayedHabit.endDate}
-                        habitContribution={displayedHabit.habitContribution}
-                        darkTheme={darkTheme} 
-                        onDeleteHabit={onDeleteHabit}
-                        handleEditHabit={handleEditHabit}
-                    /> :
-                    'no habits'
-                }
-            </Box>
-           
-            {
-                habits.length > 0 && <Stack spacing={1} sx={{
-                    padding:'20px',
-                    marginTop:'20px',
-                    // height:'100%',
-                    maxHeight: '504px', // Adjust to fit your layout
-                    overflowY: 'auto',
-                    bgcolor: darkTheme ? '#4D4D4D' : '#E6E6E6',
-                    borderRadius: '4px',
+                borderRadius: '8px',
+                width:'800px',
+                height:'640px',
+                display:'flex',
+                justifyContent:'center',
+                alignItems:'center',
+            }}>
+                <Box sx={{
+                    height:'520px',
+                    width:'600px',
+                    overflowY:'auto',
+                    margin:'20px'
                 }}>
                     {
-                        habits.map((habit, index) => (
-                            <Button key={index}
-                                sx={{
-                                    maxHeight:'40px'
-                                }}
-                                onClick={() => handleSelectHabit(habit.id)} 
-                                disableElevation 
-                                variant="contained">
-                                    {habit.title.length > 10 ? `${habit.title.slice(0, 10)}...` : habit.title}
-                            </Button>
-                        ))
+                        displayedHabit ?
+                            <HabitCard
+                                idOfCard={displayedHabit.id}
+                                title={displayedHabit.title} 
+                                desc={displayedHabit.desc}
+                                startDate={displayedHabit.startDate}
+                                endDate={displayedHabit.endDate}
+                                habitContribution={displayedHabit.habitContribution}
+                                darkTheme={darkTheme} 
+                                onDeleteHabit={onDeleteHabit}
+                                handleEditHabit={handleEditHabit}
+                            /> :
+                        'no habits'
                     }
-                </Stack>
-            }
-        </Box>
-    </Box>
+                </Box>
+
+                {
+                    habits.length > 0 && <Stack spacing={1} sx={{
+                        padding:'20px',
+                        height:'520px',
+                        overflowY: 'auto',
+                        bgcolor: darkTheme ? '#4D4D4D' : '#E6E6E6',
+                        borderRadius: '4px',
+                        width:'180px',
+                    }}>
+                        {
+                            habits.map((habit, index) => (
+                                <Button key={index}
+                                    sx={{
+                                        maxHeight:'40px'
+                                    }}
+                                    onClick={() => handleSelectHabit(habit.id)} 
+                                    disableElevation 
+                                    variant="contained">
+                                        {habit.title.length > 10 ? `${habit.title.slice(0, 10)}...` : habit.title}
+                                </Button>
+                            ))
+                        }
+                    </Stack>
+                }
+            </Box>
 }
 
 export default Habits
