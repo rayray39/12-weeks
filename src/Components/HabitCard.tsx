@@ -189,7 +189,7 @@ function HabitCard({ idOfCard, title, desc, startDate, endDate, habitContributio
         setOpenEditDialog(false);
     }
 
-    return <Card sx={{
+    return <Card variant="outlined" sx={{
         bgcolor: darkTheme ? '#4D4D4D' : '#E6E6E6'
     }}>
         <CardContent>
